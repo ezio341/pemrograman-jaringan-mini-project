@@ -5,6 +5,7 @@
  */
 package texteditor.views;
 
+import com.sun.glass.events.KeyEvent;
 import java.awt.Color;
 import java.awt.GraphicsEnvironment;
 import java.awt.Toolkit;
@@ -42,7 +43,6 @@ import texteditor.controller.MainEditorController;
 public class MainEditor extends javax.swing.JFrame {
     private final MainEditorController controller;
     private final RTFEditorKit rtf;
-    private final StyleContext context;
     private final GraphicsEnvironment graphicEnvironment;
     private final SimpleAttributeSet defaultAttrib, FontAttrib, alligmentAttrib;
         
@@ -56,7 +56,6 @@ public class MainEditor extends javax.swing.JFrame {
         setIconImage(icon.getImage());
         //set start window position
         setLocation(200, 100);
-        String c;
         controller = new MainEditorController(this);
         graphicEnvironment=GraphicsEnvironment.getLocalGraphicsEnvironment();
         rtf=new RTFEditorKit();
@@ -66,7 +65,6 @@ public class MainEditor extends javax.swing.JFrame {
         
         initComponents();
         textArea.setEditorKit(rtf);
-        context = new StyleContext();
 
         //set default Style
         StyleConstants.setFontFamily(defaultAttrib, "Arial");
@@ -107,6 +105,8 @@ public class MainEditor extends javax.swing.JFrame {
         btnCenter = new javax.swing.JButton();
         jLabel9 = new javax.swing.JLabel();
         btnRight = new javax.swing.JButton();
+        toLine = new javax.swing.JTextField();
+        jButton1 = new javax.swing.JButton();
         jToolBar3 = new javax.swing.JToolBar();
         btnTxtColor = new javax.swing.JButton();
         jLabel10 = new javax.swing.JLabel();
@@ -343,6 +343,25 @@ cbFontSize.addActionListener(new java.awt.event.ActionListener() {
         }
     });
     jToolBar2.add(btnRight);
+
+    toLine.setMaximumSize(new java.awt.Dimension(30, 2147483647));
+    toLine.addMouseListener(new java.awt.event.MouseAdapter() {
+        public void mouseClicked(java.awt.event.MouseEvent evt) {
+            toLineMouseClicked(evt);
+        }
+    });
+    jToolBar2.add(toLine);
+
+    jButton1.setText("jButton1");
+    jButton1.setFocusable(false);
+    jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+    jButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+    jButton1.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            jButton1ActionPerformed(evt);
+        }
+    });
+    jToolBar2.add(jButton1);
 
     jToolBar3.setBackground(new java.awt.Color(255, 255, 255));
     jToolBar3.setBorder(javax.swing.BorderFactory.createTitledBorder("Coloring"));
@@ -613,6 +632,8 @@ cbFontSize.addActionListener(new java.awt.event.ActionListener() {
         // TODO add your handling code here:
         StyleConstants.setFontSize(FontAttrib, Integer.valueOf(cbFontSize.getSelectedItem().toString()));
         textArea.setCharacterAttributes(FontAttrib, true);
+        StringBuffer b;
+        
     }//GEN-LAST:event_cbFontSizeActionPerformed
 
     private void cbFontFamilyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbFontFamilyActionPerformed
@@ -701,6 +722,25 @@ cbFontSize.addActionListener(new java.awt.event.ActionListener() {
         paste(textArea.getDocument());
     }//GEN-LAST:event_edit_pasteActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        toLine.setEnabled(false);
+        try {
+            if(textArea.getDocument().getText(0, textArea.getDocument().getLength())!=null && toLine.getText()!=null){
+                
+                controller.toLine(textArea, Integer.parseInt(toLine.getText()));
+            }
+        } catch (BadLocationException ex) {
+            Logger.getLogger(MainEditor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void toLineMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_toLineMouseClicked
+        // TODO add your handling code here:
+        toLine.setEnabled(true);
+    }//GEN-LAST:event_toLineMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -761,6 +801,7 @@ cbFontSize.addActionListener(new java.awt.event.ActionListener() {
     private javax.swing.JMenuItem edit_paste;
     private javax.swing.JMenuItem file_open;
     private javax.swing.JMenuItem file_save;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -785,6 +826,7 @@ cbFontSize.addActionListener(new java.awt.event.ActionListener() {
     private javax.swing.JMenuItem popPaste;
     private javax.swing.JPopupMenu popUpRightClick;
     private javax.swing.JTextPane textArea;
+    private javax.swing.JTextField toLine;
     private javax.swing.JLabel txtChar;
     private javax.swing.JLabel txtCol;
     private javax.swing.JLabel txtLine;

@@ -5,6 +5,7 @@
  */
 package texteditor.controller;
 
+import java.awt.Color;
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
@@ -18,6 +19,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.JTextPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
@@ -73,6 +75,30 @@ public class MainEditorController {
             for(String s : words)countWord++;
         }
         return countWord;
+    }
+    public void toLine(JTextPane text, int line) throws BadLocationException{
+        if(!text.getDocument().getText(0, text.getDocument().getLength()).isEmpty()){
+            char[] textArr = text.getDocument().getText(0, text.getDocument().getLength()).toCharArray();
+            int countNewLine=0;
+            int pos=0;
+            for(char c : textArr){
+                if(c == '\n'){
+                    countNewLine++;
+                }else if(pos == textArr.length){
+                    pos=0;
+                    break;
+                }
+                if(countNewLine == line){
+                    break;
+                }
+                pos++;
+            }
+            pos++;
+            text.setCaretPosition(pos);
+            text.setSelectionStart(pos);
+            text.setSelectionEnd(pos+3);
+            text.setSelectionColor(Color.red);
+        }
     }
     
     public void save() throws BadLocationException{
